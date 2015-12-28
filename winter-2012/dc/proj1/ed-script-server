@@ -1,0 +1,22 @@
+/main.*/
+-1,+3d
+i
+//#undef WhiteBoardServer
+int getTransientProgNumber(int startprgn, int version);
+
+int main(int argc, char *argv[])
+{
+	register SVCXPRT *transp;
+	int WhiteBoardServer1 =  WhiteBoardServer;
+        #undef WhiteBoardServer
+	int WhiteBoardServer = WhiteBoardServer1; 
+     
+	WhiteBoardServer = getTransientProgNumber(WhiteBoardServer, WhiteBoardServerVersion);
+	if (WhiteBoardServer <= 0) {
+	    fprintf(stderr, "%s: getTransientProgNumber %d!\n",
+		    argv[0], WhiteBoardServerVersion, WhiteBoardServer);
+	    exit(2);
+	}
+.
+w
+q

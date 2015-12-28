@@ -1,0 +1,316 @@
+\documentclass{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{algorithmic,algorithm}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{soul,color}
+\usepackage{ulem}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{pifont}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{pdftricks}
+\usepackage{subfigure}
+\usepackage{multicol}
+\usepackage{enumerate}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+	%backgroundcolor=\color{lbcolor},
+	tabsize=4,
+	rulecolor=,
+	language=c++,
+        basicstyle=\setstretch{1},
+        upquote=true,
+        aboveskip={\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=true,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        %frame=single,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0,0,1},
+        commentstyle=\color[rgb]{0.133,0.545,0.133},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=7.0in        %
+\textheight=9.2in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{Homework\ \#2}
+\newcommand{\hmwkDueDate}{Oct.\ 12th,\ 2010}
+\newcommand{\hmwkClass}{Data Structure}
+\newcommand{\hmwkClassTime}{TR\ 4:10-5:25pm}
+\newcommand{\hmwkClassInstructor}{Meilin\ Liu}
+\newcommand{\hmwkAuthorName}{Shumin\ Guo}
+\newcommand{\answer}{\textbf{\\\underline{ANSWER:}\\}}
+
+% Setup the header and footer
+\pagestyle{fancy}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ - \hmwkTitle}  %
+\rhead{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{}                           %
+\renewcommand\headrulewidth{0.4pt}                                      %
+%\renewcommand\footrulewidth{0.2pt}                                     %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\textmd{\textbf{\hmwkClass:\
+      \hmwkTitle}}\\\normalsize\small{Due\ Date:\
+    \hmwkDueDate}\\} 
+\date{\today}
+\author{\textsc{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+\item(10 points) Describe in pseudo-code, a linear-time algorithm for
+reversing a queue Q. To access the queue, you are only allowed to use
+the basic functions of the queue ADT defined as follows (Hint: Using a
+stack, the basic stack functions defined in the textbook and in the
+class). 
+
+\begin{lstlisting}
+class Queue {
+public:
+    int size();
+    bool isEmpty();
+    Object& front()
+    void enqueue(Object o);
+    Object dequeue()
+};
+\end{lstlisting}
+\vspace{-10pt}
+\begin{multicols}{2}
+  \setlength{\baselineskip}{10pt}
+  \addtolength{\columnsep}{0.25cm} 
+  \setlength{\columnseprule}{1pt}
+  \textsc{\large{\uuline{Pseudocode With Queue}}}\\
+  \textbf{Algorithm} reverseQueue(Q):
+    \begin{algorithmic}[1]
+      \STATE{\textbf{Input:}Queue(Q) with length N($N \geq 0$).}
+      \STATE{\textbf{Output:}Reversed Queue.}
+      \STATE $x\leftarrow N$
+      \WHILE{$x > 0$}
+      \STATE $X \leftarrow$ Q.dequeue()
+      \STATE Q.enqueue(X)
+      \STATE $x \leftarrow x-1$
+      \ENDWHILE
+    \end{algorithmic}
+    \vspace{70pt}
+    \textsc{\large{\uuline{Pseudocode With Stack}}}\\
+    \textbf{Algorithm} reverseQueue(Q):
+    \begin{algorithmic}[1]
+      \STATE{\textbf{Input:}Queue(Q) with length N($N \geq 0$).}
+      \STATE{\textbf{Output:}Reversed Queue.}
+      \STATE $S \leftarrow$ New(Stack) AND Size(S) $\geq$ N
+      \WHILE{Q Not Empty}
+      \STATE $X \leftarrow$ Q.dequeue()
+      \STATE S.Push(X)
+      \ENDWHILE
+      \STATE $x\leftarrow N$
+      \WHILE{S Not Empty}
+      \STATE $X \leftarrow$ S.Pop()
+      \STATE Q.enqueue(X)
+      \ENDWHILE
+    \end{algorithmic}
+\end{multicols}
+
+\setcounter{figure}{0}          %set the figure counter to zero.
+\item(20 points) Let T be the binary tree as shown in the following
+figure. (See Figure ~\ref{fig:question2})
+\begin{enumerate}[(a)]
+\item Give the output of the preorder tree traversal of T. \fbox{A
+  B D G H E C F}
+\item Give the output of the postorder tree traversal of
+  T. \fbox{G H D E B F C A}
+\item Give the output of the inorder tree traversal of T. \fbox{G
+    D H B E A F C}
+\item Give the output of the level order tree traversal of
+  T. \fbox{A B C D E F G H}
+\end{enumerate}
+\input{question2-1}
+
+% Start question three.
+\item(10 points) Draw a (single) binary tree T, such that
+\begin{enumerate}[(a)]
+\item Each internal node of T stores a single character
+\item A preorder traversal of T yields A B C D F G E
+\item An inorder traversal of T yields C B F D G A E 
+\hspace{1em}\fbox{See Result in Figure ~\ref{fig:question3}}
+\end{enumerate}
+\input{question3-1}
+
+% Here is question four. 
+\item(10 points) Let T be the tree as shown in the following figure
+\fbox{See Figure \ref{fig:question4}}
+\input{question4-1}
+
+\begin{enumerate}[(a)]
+\item Give the output of the preorder tree traversal of
+  T. \fbox{A B E F I J C G H D} 
+\item Give the output of the postorder tree traversal of
+  T. \fbox{E I J F B G H C D A} 
+\end{enumerate}
+
+% Question 5. 
+\item(20 points) Answer the following questions (This question is for
+graduate students only, but undergraduate students are welcome to
+finish this question to get bonus points). 
+\begin{enumerate}[(a)]
+\item What is the minimum height h of a binary tree with n nodes.
+\fbox{$\lceil log_2\frac{n+1}{2} \rceil$}
+\item What is the maximum height h of a binary tree with n nodes.
+\fbox{n-1}
+\end{enumerate}
+
+% Question 6. 
+\item(20 points) Answer the following questions (This question is for
+graduate students only, but undergraduate students are welcome to
+finish this question to get bonus points).
+\begin{enumerate}[(a)]
+\item What is the minimum number of external nodes for a full
+  binary tree (proper binary tree) with height h? Justify your answer.\\
+  \answer In order to get a minimum number of external(leaf) nodes, we
+    need to assign as many nodes as possible to be as internal nodes,
+    but for a proper binary tree, a node either have zero or two
+    children. So we can try to build a tree whose deepest nodes are
+    two external nodes and for other levels there is only one external
+    node for each level. The prototype of this kind of tree is shown
+    in the picture below. And we can easily calculate the minimum
+    number of external nodes to be $h+1$. \fbox{Please see
+      Figure~\ref{fig:int_ext}~for a sample tree.} \\
+    \input{question6-1}
+      
+
+\item What is the maximum number of external nodes for a full
+  binary tree (proper binary tree) with height h? Justify your
+  answer. 
+  \answer A proper binary tree with height h will have the maximum
+  number of external nodes if this tree becomes a perfect tree. This
+  means for level l of this tree it will have $2^l$ nodes in this
+  level and for level h(the height), we will have $2^h$ nodes, which
+  are all external nodes. 
+
+\item Let T be a full binary tree (proper binary tree) with height
+  h and n nodes, Show that $log_2(n+1)-1 \leq h\leq \frac{n-1}{2}$. 
+  \answer According to the answers of the above two questions, we know
+  that for a proper binary tree, the height $h$ will be the highest if
+  there are minimum number of external nodes($en=h+1$ where the
+  number of internal nodes will be $in=h$) and $h$ will be the
+  lowest when there are maximum number of external nodes($en=2^h$ and
+  at this time the number of internal nodes is $in=2^h-1$). \\
+  And according to the above description, we can get the relationship
+  between the height of tree and the total number of nodes as follows:
+  
+  Maximum height: $n=in + en = h+h+1=2h+1 \Rightarrow h = \frac{n-1}{2}$ \\
+  Minimum height: $n=in + en = 2^h-1+2^h \Rightarrow h=log_2(n+1)-1$ \\
+  To Sum up, we have: \fbox{$log_2(n+1)-1\leq h \leq \frac{n-1}{2}$}.\\ 
+  Done. 
+
+\item For which values of n and h can the above lower and upper
+  bounds on h be attained with equality?
+\answer When \fbox{$n=2h+1$} the upper bound can attain equality. \\
+When \fbox{$n=2^{h+1}-1$} the lower bound can attain equality. 
+\end{enumerate}
+
+% Question 7.
+\item(10points) For the set of $\{ 2, 6, 10, 9, 4, 1, 13\}$ of keys, draw
+binary search trees of height 2, 3, 4, 5, and 6. \fbox{See Result on
+  Figure ~\ref{fig:question7}.}
+\input{question7-1}
+
+% Question 8.
+\item(15 points) Consider the Binary Search Tree (BST) to the following.
+\begin{enumerate}[(a)]
+\item (5 points)  Draw a circle around each node that would be visited in
+a search for the value 40. \\
+\fbox{Please see Figure \ref{fig:bst_visit}.}
+\input{question8-1}
+
+\item (10 points)  Show how the tree would appear if the value 35 were
+deleted. Assuming duplicates are stored in the left subtree. 
+\answer We can pick the direct successor of 35 and place it onto 35's
+position, in this particular case, 39 is the direct successor. So the
+result is \fbox{See Figure \ref{fig:bst_delete}.}
+\input{question8-2}
+\end{enumerate}
+
+% Question 9.
+\item(10points). Suppose that myBST is an empty Binary Search Tree. The
+following operations are performed in the given order. Draw the
+resulting tree.  Assuming duplicates are inserted in the left subtree. \\
+myBST.insert(20) \\
+myBST.insert(28) \\
+myBST.insert(40) \\
+myBST.insert(12) \\
+myBST.insert(25) \\
+myBST.insert(23) \\
+myBST.insert(24) \\
+myBST.insert(16) \\
+myBST.delete(23) \\
+myBST.insert(24) \\
+\fbox{Please See Figure \ref{fig:insert}.} \\
+\input{question9-1}
+
+% Question 10.
+\item(20 Points). Suppose you are given the following array, which
+represents a complete binary tree:
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} 
+      \hline Index &0&1&2&3&4&5&6&7&8&9&10&11&12&13&14&15&16 \\
+      \hline Key&12&25&72&49&64&58&52&92&8&19&43&27&98&16&37&33&6\\
+      \hline
+    \end{tabular}
+    \caption{Array Representation of a Binary Tree.} 
+    \vspace{-15pt}
+  \end{center}
+\end{table}
+\begin{enumerate}[(a)]
+\item (5 points) Draw the complete binary tree represented by this array. 
+\fbox{Please See Figure \ref{fig:complete_tree}} \\
+\input{question10-1}
+
+\item (10 Points) Is this binary tree a binary heap? If not, build a heap
+out of this array using the BottomUpHeap() we learned in the class. 
+\fbox{No, this is not a binary heap. Please see result on Figure
+  \ref{fig:binary_heap}}
+\input{question10-2}
+
+\item (5 Points) {\Large List the values from the heap as they would be printed
+out by an inorder traversal of the heap, where the \textbf{visit()} function
+prints the value of the current node.} \\
+
+\fbox{\large{49, 33, 92, 12, 25, 8, 64, 19, 43, 6, 58, 27, 98, 16, 52,
+    37, 72}}
+
+\end{enumerate}
+\end{enumerate}                 %the whole doc
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

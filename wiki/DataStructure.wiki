@@ -1,0 +1,16 @@
+#summary Notes, technical issues and topics for this class.
+
+= Introduction =
+
+Topics in this class: 
+  # Algorithm analysis, Big-O, Big-Theta and Big-Omega Notations.
+  # List, Vector. 
+  # Stack and Queue. 
+  # Tree, Binary tree, Full, Complete, Perfect Tree.
+  # Binary Search Tree. 
+  # Heap.
+  # More ... ... 
+
+= Details =
+
+  # note s. 

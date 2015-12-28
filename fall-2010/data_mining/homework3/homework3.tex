@@ -1,0 +1,390 @@
+\documentclass{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{algorithmic,algorithm}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{soul,color}
+\usepackage{ulem}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{amsfonts}
+\usepackage{pifont}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{pstricks,pst-node,pst-tree}
+
+\newcommand{\tickYes}{\checkmark}
+\newcommand{\tickNo}{\hspace{1pt}\ding{55}}
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.8in        %
+\textheight=9.4in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{Homework\ \#3}
+\newcommand{\hmwkDueDate}{Oct.\ 27,\ 2010}
+\newcommand{\hmwkClass}{Data Mining}
+\newcommand{\hmwkClassTime}{MW\ 4:10-5:25pm}
+\newcommand{\hmwkClassInstructor}{Guozhu\ Dong}
+\newcommand{\hmwkAuthorName}{Shumin\ Guo}
+
+% Setup the header and footer
+\pagestyle{fancy}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ - \hmwkTitle}  %
+\rhead{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+%\renewcommand\footrulewidth{0.4pt}                                     %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\textbf{\hmwkClass:\ 
+      \hmwkTitle}\\\normalsize\small{Due\ Date:\
+    \hmwkDueDate}} 
+\date{\today}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% \begin{spacing}{1.1}
+\maketitle
+
+\begin{enumerate}
+\item Compare the advantages and disadvantages of eager classification
+  (e.g., decision trees, bayesian, etc.) versus lazy classification
+  (e.g., k-nearest neighbors). Eager systems build the model before
+  they see the test data, lazy systems do not do model building until
+  they see the test data. \\
+\textbf{ANSWER:}\\ 
+Intuitively, lazy classifiers performs better than eager classifiers
+because of two characteristics: 
+
+Missing class association rules(CARs): Eager classifiers search for
+CARs in a large search space, which is induced by all features of the
+training data. While this strategy generates a large rule-set, CARs
+that are important to some specific test instances may be missed. 
+
+And Eager classifiers must commit to a single hypothesis that covers
+the entire instance space. It generate CARs before the test instance
+is even known. For this reason, eager classifiers often combine small
+disjuncts in order to generate more general predicitions. This can
+reduce classification performance in highly disjunctive spaces. 
+
+Lazy classifiers generally use less time in training but more time in
+predicting Accuracy. Lazy method effectively uses a richer hypothesis
+space since it uses many local linear functions to form its implicit
+global approximation to the target function. 
+However, the same concept also leads to overfitting, reducing the
+generalization and affecting the classification accuracy. So,
+overfitting and high sensitivity to irrelevant features are
+shortcomings of lazy classifications.A natural solution is to identify
+and discard the irrelevant features. Thus, feature selection methods
+may be used. Another disadvantage is that the lazy classifiers is
+typically require more work to classify all test instances. 
+
+\item Why is tree pruning useful in decision tree induction? \\
+\textbf{ANSWER:} \\
+Pruning is a technique in machine learning that reduces the size of
+decision trees by removing sections of the tree that provide little
+power to classify instances. The dual goal of pruning is reduced
+complexity of the final classifier as well as better predictive
+accuracy by the reduction of overfitting and removal of sections of a
+classifier that may be based on noisy or erroneous data.
+
+A tree that is too large risks overfitting the training data and
+poorly generalizing to new samples. A common strategy is to grow the
+tree until each node contains a small number of instances then use
+pruning to remove nodes that do not provide additional information.
+
+So, pruned decision trees have several advantages over traditional
+decision trees: 
+\begin{itemize}
+\item They avoid overfitting, because they ignore irrelevant attributes.
+\item They are smaller, which makes them easier to understand and more
+efficient to store and use. 
+\item They can handle noisy data, because they will ignore attributes
+rendered meaningless by noise. 
+\end{itemize}
+
+\item Given a decision tree, you have the option of (a)converting the
+  decision tree to rules and then pruning the resulting rules, or (b)
+  pruning the decision tree and then converting the pruned tree to
+  rules. Which method is better and why? \\
+\textbf{ANSWER:} \\
+I will choose method (b).
+When a decision tree is built, many of the branches will reflect
+anomalies in the training data due to noise or outliers. Tree pruning
+methods address this problem of overfitting the data. Pruned trees
+tend to be smaller and less complex and, thus, easier to comprehend. 
+
+\item Explain why is the NBC algorithm called naive? \\
+\textbf{ANSWER:} \\
+A Bayes classifier is a simple probabilistic classifier based on
+applying Bayes' theorem (from Bayesian statistics) with strong (naive)
+independence assumptions. A more descriptive term for the underlying
+probability model would be "independent feature model". 
+
+Given data sets with many attributes, it would be extremely
+computationally expensive to compute $P(X|C_i)$. In order to reduce
+computation in evaluating $P(X|C_i)$, the naive assumption of class
+conditional independence is made. This presumes that the values of the
+attributes are conditionally independent of one another, given the
+class label of the tuple (i.e., that there are no dependence
+relationships among the attributes). 
+\begin{equation}
+P(X|C_i) = \prod_{k=1}^nP(x_k|C_i) 
+= P(x_1|C_i)\times P(x_2|C_i)\times \ldots \times P(x_n|C_i).
+\end{equation} 
+We can easily estimate the probabilities $P(x_1|C_i), P(x_2|C_i),
+\ldots, P(x_n|C_i)$ from the training tuples.
+
+\item The following table consists of training data from an employee
+  database.
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline {\it department} & {\it status}&{\it age}&{\it salary} \\
+      \hline 
+      sales & senior & 31-40 & Medium \\
+      sales & junior & 21-30 & Low \\
+      sales & junior & 31-40 & Low \\
+      systems & junior & 21-30 & Medium \\
+      systems & senior & 31-40 & High \\
+      systems & junior & 21-30 & Medium \\
+      systems & senior & 41-50 & High \\
+      marketing & senior & 31-40 & Medium \\
+      marketing & junior & 31-40 & Medium \\
+      secretary & senior & 41-50 & Medium \\
+      secretary & junior & 21-30 & Low \\
+      \hline
+    \end{tabular}
+    \caption{Training Data of Employee Data.\label{tbl:dat_eple}}
+  \end{center}
+  \vspace{-10pt}
+\end{table}
+
+\begin{enumerate}
+\item[(a)] Let {\it status} be the class attribute. Use the ID3
+  algorithm to construct a decision tree from the given data.\\
+\textbf{ANSWER:} \\
+First, let's decide which attribute will be put on the top of the
+tree. We need to calculate the information gain for each attribute
+relative the the class {\it status}.
+
+Entropy(S)$ = -P_{junior}log_2(P_{junior})-P_{senior}log_2(P_{senior}) \\
+= -\frac{6}{11}log_2\frac{6}{11}-\frac{5}{11}log_2\frac{5}{11} \\
+= 0.545455\times 0.87447 + 0.4545455 \times 1.1375035  \\
+= 0.47698315 + 0.517047056 \\
+\approx~ 0.99403$ \\
+
+Then, Let's calculate the information gain for each attribute: \\
+Gain(S, department) $= \\
+0.99403-\frac{3}{11}Entropy(S_{sales})-\frac{4}{11}Entropy(S_{systems})-
+\frac{2}{11}Entropy(S_{marketing})-\frac{2}{11}Entropy(S_{secretary})\\
+= 0.99403 - 0.273\times 0.918 - 0.364\times 1.0 - 0.182\times 1.0 -
+0.182\times 1.0 \\
+= 0.99403 - 0.2506 - 0.364 - 0.182 - 0.182 \\
+\approx~ 0.01543$. \\
+
+Gain(S, age) $ = 
+0.99403-\frac{4}{11}Entropy(S_{21-30})-\frac{5}{11}Entropy(S_{31-40})-
+\frac{2}{11}Entropy(S_{41-50}) \\
+= 0.99403 - 0.364\times 0 - 0.455\times 0.97095 - 0.182\times 0 \\
+= 0.99403 - 0.44178 \\
+\approx~ 0.55225 $. \\
+
+Gain(S, salary) $ = 
+0.99403-\frac{2}{11}Entropy(S_{High})-\frac{6}{11}Entropy(S_{Medium})-
+\frac{3}{11}Entropy(S_{Low}) \\
+= 0.99403 - 0.182\times 0 - 0.5455\times 1 - 0.273\times 0 \\
+= 0.4485 $. \\
+
+Clearly, from the above calculated result, we will choose age as
+the first level of tree. And we can get the tree structure as shown in
+Figure \ref{fig:id3-1}.
+\begin{figure}[H]
+  \vspace{-10pt}
+  \begin{center}
+    \pstree[levelsep=10ex]{\Toval{age}}{
+      \Toval{senior}\tlput{41-50}
+      \Toval{TBD}\tvput{31-40}
+      \Toval{junior}\trput{21-30}
+    }
+    \caption{First Level Tree Using ID3 Method.\label{fig:id3-1}}
+    \vspace{-10pt}
+  \end{center}
+\end{figure}
+
+After the first level of tree building, we can determine for
+senior$\Leftrightarrow$41-50 and junior$\Leftrightarrow$21-30. But for
+age group 31-40, it can not be determined using the given data, so
+we need to do another step with the similar method as used
+above. Please see the reference table for this step at Table
+\ref{tbl:medium} The calculations are show as below.\\
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline {\it department} & {\it status}&{\it age}&{\it salary} \\
+      \hline 
+      sales & senior & 31-40 & Medium \\
+      sales & junior & 31-40 & Low \\
+      systems & senior & 31-40 & High \\
+      marketing & senior & 31-40 & Medium \\
+      marketing & junior & 31-40 & Medium \\
+      \hline
+    \end{tabular}
+    \caption{Age 31-40 reference table.\label{tbl:medium}}
+  \end{center}
+  \vspace{-10pt}
+\end{table}
+
+Gain($S_{age}$,department)$ = 1.0 - \frac{2}{5}\times 1 -
+\frac{1}{5}\times 0 - \frac{2}{5}\times 1 \\
+= 1.0 - 0.4 - 0 - 0.4\\
+= 0.20$. \\
+
+Gain($S_{age}$,salary)$ 
+= 1.0-\frac{1}{5}\times 0-\frac{1}{5}\times 0 -\frac{3}{5}\times 0.9183\\
+= 1.0 - 0 - 0 - 0.5510\\
+= 0.4490$. \\
+
+From the above calculation, we will select {\it salary} as the
+attribute for next level decision tree construction. And we can get
+the following tree as show in Figure \ref{fig:id3-2}.\\
+
+\begin{figure}[H]
+  \vspace{-10pt}
+  \begin{center}
+    \pstree[levelsep=10ex]{\Toval{age}}{
+      \Toval{senior}\tlput{41-50}
+      \pstree{\Toval{salary}\tvput{31-40}} {
+        \Toval{junior}\tlput{Low}
+        \Toval{senior}\tvput{Medium}
+        \Toval{senior}\trput{High}
+      }
+      \Toval{junior}\trput{21-30}
+    }
+    \caption{Second Level Tree Using ID3 Method.\label{fig:id3-2}}
+    \vspace{-10pt}
+  \end{center}
+\end{figure}
+
+Figure \ref{fig:id3-2} is the final result of the decision tree building. 
+
+\item[(b)] Given an instance with the values systems, senior, and
+  21-30 for the attribute {\it department},{\it status}, and
+  {\it age}, respectively, what would be a naive bayesian
+  classification for the {\it salary} of the sample be? You want to
+  use "Laplace correction" for probability estimates. Show all the
+  steps. \\
+\textbf{ANSWER:} \\
+For the class {\it salary}, we have three possible values, Low, Medium
+and High respectively.
+
+According to the requirement, the tuple that we need to classify is:
+X=(department=systems, status=senior, age=21-30) \\
+We need to maximize $P(X|C_i)P(C_i)$, for $i=1,2,3$. let's first
+compute the prior probability of each class: \\
+P(salary=Low) = 3/11 = 0.273 \\
+P(salary=Medium) = 6/11 = 0.5455\\
+P(salary=High) = 2/11 = 0.182\\
+
+Then, let's compute the conditional probalities: \\
+P(department=systems $|$ salary=Low) = 0.0 \\
+P(department=systems $|$ salary=Medium) = 2/4 = 0.5 \\
+P(department=systems $|$ salary=High) = 2/4 = 0.5 \\
+P(status=senior $|$ salary=Low) = 0.0 \\
+P(status=senior $|$ salary=Medium) = 2/4 = 0.5 \\
+P(status=senior $|$ salary=High) = 2/4 = 0.5 \\
+P(age=21-30 $|$ salary=Low) = 2/4 = 0.5 \\
+P(age=21-30 $|$ salary=Medium) = 2/4 = 0.5 \\
+P(age=21-30 $|$ salary=High) = 0.0 \\
+
+With the above possibilities, we can have: \\ 
+P(X$|$salary=Low) = P(department=systems$|$salary=Low)$\times$ \\
+P(status=senior$|$salary=Low)$\times$ P(age=21-30$|$salary=Low) \\
+= $0.0 \times 0.0 \times 0.5$ \\
+= 0.0 \\
+
+Similarly, we have: \\
+P(X$|$salary=Medium) = $0.5 \times 0.5 \times 0.5 = 0.125$. \\
+P(X$|$salary=High) = $0.5 \times 0.5 \times 0.0 = 0.0$. \\
+
+Then, let's compute $P(X|C_i)P(C_i)$, and maximize it: \\
+P(X$|$salary=Low)$\times$P(salary=Low) = 0.0 \\
+P(X$|$salary=Medium)$\times$P(salary=Medium) \\
+= 0.125$\times$0.5455 = 0.0682 \\
+P(X$|$salary=High)$\times$P(salary=High) = 0.0
+
+Therefore, the naive Bayesian classfier predicts salary=Medium for
+tuple X. \\
+
+\textbf{With Laplacian correction}, we can avoid computing probability
+values of zero as what has happened above. \\
+First, we have the conditional probability as below: \\
+P(department=systems $|$ salary=Low) = 1/7 = 0.143 \\
+P(department=systems $|$ salary=Medium) = 3/7 = 0.429 \\
+P(department=systems $|$ salary=High) = 3/7 = 0.429 \\
+P(status=senior $|$ salary=Low) = 1/7 = 0.143 \\
+P(status=senior $|$ salary=Medium) = 3/7 = 0.429 \\
+P(status=senior $|$ salary=High) = 3/7 = 0.429 \\
+P(age=21-30 $|$ salary=Low) = 3/7 = 0.429 \\
+P(age=21-30 $|$ salary=Medium) = 3/7 = 0.429 \\
+P(age=21-30 $|$ salary=High) = 1/7 = 0.143\\
+
+P(X$|$salary=Low) = P(department=systems$|$salary=Low)$\times$ \\
+P(status=senior$|$salary=Low)$\times$ P(age=21-30$|$salary=Low) \\
+= $0.143 \times 0.143 \times 0.429$ \\
+$\approx$~ 0.008773\\
+
+Similarly, we have: \\
+P(X$|$salary=Medium) = $0.429 \times 0.429 \times 0.429 = 0.078954$. \\
+P(X$|$salary=High) = $0.429 \times 0.429 \times 0.143 = 0.02632$. \\
+
+Similarly, we have: \\
+P(X$|$salary=Low)$\times$P(salary=Low)=0.008773$\times$0.273=0.002395\\
+P(X$|$salary=Medium)$\times$P(salary=Medium) \\
+= 0.078954$\times$0.5455 = 0.04307 \\
+P(X$|$salary=High)$\times$P(salary=High) = 0.02632$\times$0.182 =
+0.00478. \\
+Still, we have NBC predicts salary = Medium for tuple X.
+\end{enumerate} % For question five. 
+
+\item Given the data points (0,0/1), (1,0/1), (1,1/1), (4,3/2),
+  (3,4/2), (1,4/2) where (x,y/c) gives a sample with x and y as
+  attribute values and c the class label. Use k-NN to find the class
+  label for (2,2/?) when k=1, and when k=5. Use Euclidean distance as
+  the distance measure. \\ 
+\textbf{ANSWER:} \\
+Let's compute the distance for (2,2) to each point. \\
+(0,0/1) and (2,2/?) $\rightarrow$ $\sqrt{8}$ = 2.828\\
+(1,0/1) and (2,2/?) $\rightarrow$ $\sqrt{5}$ = 2.236\\
+(1,1/1) and (2,2/?) $\rightarrow$ $\sqrt{2}$ = 1.414\\ 
+(4,3/2) and (2,2/?) $\rightarrow$ $\sqrt{5}$ = 2.236\\
+(3,4/2) and (2,2/?) $\rightarrow$ $\sqrt{5}$ = 2.236\\
+(1,4/2) and (2,2/?) $\rightarrow$ $\sqrt{5}$ = 2.236\\
+
+When k=1, (1,1/1) has the nearest Euclidean distance with (2,2/?), so
+we have the result: (2,2/1).\\
+
+When k=5, we have two samples with class 1 and three samples with
+class 2, so we have the result: (2,2/2).
+
+
+\end{enumerate} % For whole homework. 
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

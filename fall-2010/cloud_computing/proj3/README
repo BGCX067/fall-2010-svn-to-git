@@ -1,0 +1,15 @@
+HOWTO
+First, you need to go to my directory for this project on nimbus17, which is /home/w234sxg/project3
+Test this project by running the following command in PWD. 
+./run.sh
+and ./run-local.sh will run the pig script locally. 
+
+NOTICE: 
+After deleting the output directories, you will be led into the pig Grunt command line, 
+within the command line, you can run the program by typing "run proj3.pig". 
+
+Concerning the layout of the files and directories, I recommend to change
+to my user name w234sxg with passwd w234sxg
+
+CONTACT
+In case of any problems, please contact the author by guo.18@wright.edu.

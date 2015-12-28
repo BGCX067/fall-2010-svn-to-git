@@ -1,0 +1,13 @@
+#summary Data mining notes, techniques and summaries for exams, homework and projects.
+
+= Introduction =
+
+Following topics are covered in this course.
+  * Data preprocess. 
+  * Association Mining. 
+  * More ... ... 
+
+= Techniques =
+
+  # How to find the best split in entropy based binning. 
+  # How to select top-k gene. 

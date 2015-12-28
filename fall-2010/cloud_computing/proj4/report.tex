@@ -1,0 +1,154 @@
+\documentclass{article}
+\topmargin=-0.45in      %
+\evensidemargin=-.5in     %
+\oddsidemargin=-.5in      %
+\textwidth=7.0in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+\begin{document}
+
+\begin{center}
+\textbf{{\LARGE Cloud Computing Project \#4} \\
+Shumin Guo \\
+Due Date: Nov. 7th, 2010.}
+\end{center}
+
+\begin{enumerate}
+
+\item How do you pass a script file to an EC2 instance, when you start
+up an instance?
+
+The "-f" option is used to pass a script from when instances are started
+with the ec2-run-instances command. 
+
+\item After an instance is started, how to pass a command or a script
+and execute it in the instance?
+
+Following command option is used with hadoop-ec2 script to pass a
+command or a script and execute it in the instance. 
+[shell cmd] [group|instance id] execute any command remotely on
+the master
+
+\item Check the file hadoop-ec2-init-remote.sh and describe what the
+script does for master node and data node, respectively.
+
+For both the master and the slave nodes, the script configures the
+nodes to stop listening on a multicast group and using udp for hdfs data
+transfer. 
+
+On the master node, it first configures and startup the ganglia
+monitoring service, then namenode are formated(once), and finally,
+namenode and jobtracker are started. 
+
+On the slave nodes, ganglia monitoring service is configured and
+started. Then hadoop datanode and tasktracker are started. 
+
+\item Does the master node work normally in the single node mode? Are
+the processes: namenode, jobtracker and secondary namenode started
+normally? 
+
+No, the master node doesn't work normally in the single node
+mode. Although I can check the process of namenode and the
+jobtracker. When I try to run the example map-reduce program using
+hadoop, it doesn't work at all. 
+And I can test the system with jps and get following output:
+\begin{verbatim}
+1429 Jps
+1167 NameNode
+1213 JobTracker
+\end{verbatim}
+
+which means there is no datanode running, and so the hdfs is not 
+running correctly.
+
+Then, I tried to start the single node cluster by using the
+start-all.sh script, and the example program can be run. 
+We can also use the jps command to show the status of hadoop
+system. For example, after successfully setup the hadoop system, we
+can use this command to display the status as below: 
+\begin{verbatim}
+2782 SecondaryNameNode
+2677 DataNode
+2876 JobTracker
+4158 Jps
+2587 NameNode
+2978 TaskTracker
+\end{verbatim}
+This means the single node mode cluster is running just fine.
+
+\item can the data nodes communicate with the master node with keyless
+ssh? If not, how do you change the HadoopEC2 script? 
+
+No, public key(gsg-keypair) is required for ssh to work keylessly from
+a slave node to the master node. Inspired by the launch-hadoop-master
+script file, I copyed the part of transfering the rsa key file from
+local to the slave nodes. 
+
+\item are the processes: datanode and tasktracker in the data node
+started normally? If not, what is the reason? You may check whether
+all the ports are correctly authorized. 
+
+On multinode mode, the datanode on the master node won't start because
+of a bug related to hadoop. I followed the workaround by change the
+namespaceID of the data node (the file on my system is \\
+/mnt/hadoop/dfs/data/current/VERSION).
+
+Also, because of the problem with the hadoop-ec2 scripts, the slaves file
+were not correctly set, so the master node doesn't know what those slaves
+nodes are, so we need to set the slaves file so that master node can know 
+where the slave nodes are and start them automatically. 
+
+When setting up a two node cluster, I can't access the master node
+from the slave node, the reason I found is that the hostname and the
+configuration in the /etc/hosts doesn't match. The workaround is to
+change the hostname of slave to the name of configuration in the
+/etc/hosts file or add the current hostname to the /etc/hosts. 
+
+\item How do you change the configuration in the corresponding HadoopEC2 
+script file correspondingly to make the hadoop input/output based on S3?
+
+I updated the hadoop-site.xml file under the conf directory according to 
+the document of S3. \\
+
+\begin{verbatim}
+<property>
+  <name>fs.default.name</name>
+   <value>s3://SimonBucket</value>
+</property>
+
+<property>
+  <name>fs.s3.awsAccessKeyId</name>
+  <value>AKIAIG3LY6E3ZN356JHQ</value>
+</property>
+
+<property>
+  <name>fs.s3.awsSecretAccessKey</name>
+  <value>Qf3DVlqk52GveizYWNlYVIyS/l/5/XSVdBfQDpQy</value>
+</property>
+\end{verbatim}
+
+Also comment out all the configuration related to hdfs file system. 
+
+\item Check the script cmd-hadoop-cluster and learn how to submit a command 
+to the cluster. Upload the input data to S3. Submit your project 2 code 
+to a running cluster with input/output set to S3. Write down the script 
+for submitting the job to the cluster. \\
+
+hadoop-ec2 push proj2.tar \\
+cmd-hadoop-cluster "tar xvf proj2.tar" simon \\
+cmd-hadoop-cluster "hadoop fs -copyFromLocal input/prj2.txt input"
+simon \\
+cmd-hadoop-cluster "hadoop fs -rmr output" \\
+cmd-hadoop-cluster "hadoop jar
+/usr/local/hadoop-0.19.0/contrib/streaming/hadoop-0.19.0-streaming.jar
+-mapper "python mapper.py" -reducer "python reducer.py" -file
+mapper.py -file reducer.py -input input -output output" simon \\
+
+Or an alternative of this command is to use ssh command directly, as
+shown below: \\
+\begin{verbatim}
+ssh -i ~/.ec2/id_rsa-gsg-keypair root@ec2-50-16-76-15.compute-1.amazonaws.com 
+"cd project2/python && doit.sh"  
+\end{verbatim}
+\end{enumerate}
+\end{document}
